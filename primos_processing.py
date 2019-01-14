@@ -14,7 +14,7 @@ def primosEnRangoProc(x,y,q):
 	lprimos = []
 	ini=int(x)
 	while x<=y:
-		if primo(x):
+		if es_primo(x):
 			lprimos.append(x)
 		x+=1
 	q.put([ini])
@@ -22,11 +22,12 @@ def primosEnRangoProc(x,y,q):
 	
 #Todos los números primos en un rango
 def primosEnRango(x,y,q):
-	r=int((y-x)/6)
+	n_cpu = multiprocessing.cpu_count()
+	r=int((y-x)/n_cpu)
 	processes  = []
 	for n in range(x,y,r):
 		sig = min(n+r-1,y)
-		process = multiprocessing.Process(target=primosEnRangoThread, args=(n,sig,q))
+		process = multiprocessing.Process(target=primosEnRangoProc, args=(n,sig,q))
 		processes.append(process)
 	for p in processes:
 		print("Process:",p)
@@ -43,7 +44,7 @@ def primosEnRango(x,y,q):
 	
 def main():
 	q=multiprocessing.Queue()
-	primosEnRango(100000,150000,q)
+	primosEnRango(100000,110020,q)
 		
 if __name__ == "__main__":
 	main()

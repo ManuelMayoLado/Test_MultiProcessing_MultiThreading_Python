@@ -31,11 +31,13 @@ def primos_en_rango(x,y):
 	for n in range(num_threads):
 		r_inicio = r_final+1 #inicio del rango
 		r_final = r_inicio+t_intervalo #final del rango
-		if ((y-r_inicio)+1)/(num_threads-n) >= 1 and ((y-r_inicio)+1)%(num_threads-n) != 0:
+		if (((y-r_inicio)+1)/(num_threads-n) >= 1 and 
+			((y-r_inicio)+1)%(num_threads-n) != 0):
 			r_final += 1 #si la división no es exacta sumamos 1 para ajustar
 		r_final = min(r_final,y)
 		print("> Thread {:>2}: {:>5} - {:>5}".format(n+1,r_inicio,r_final))
-		thread = threading.Thread(target=primos_en_rango_thread, args=(r_inicio,r_final))
+		thread = threading.Thread(
+			target=primos_en_rango_thread, args=(r_inicio,r_final))
 		threads.append(thread)
 	for t in threads:
 		t.start()
